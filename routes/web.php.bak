@@ -1,0 +1,42 @@
+<?php
+
+use App\Http\Controllers\Dealer\CarController;
+use App\Http\Controllers\Dealer\DashboardController;
+use App\Http\Controllers\Dealer\InquiryController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', [HomeController::class, 'index']);
+
+Route::group([
+    'as' => 'dashboarddealer.',
+    'prefix' => 'dashboarddealer',
+    'middleware' => ['auth:web', 'verified'],
+], function () {
+    Route::resource('cars', CarController::class);
+
+    Route::patch('cars/{car}/restore', [CarController::class, 'restore'])
+        ->name('cars.restore');
+    Route::delete('cars/{car}/force-delete', [CarController::class, 'forceDelete'])
+        ->name('cars.forceDelete');
+});
+
+Route::get('/cars/search', [CarController::class, 'search'])
+    ->name('cars.search');
+
+Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
+
+Route::middleware('auth')->group(function () {
+
+    Route::post('/cars/{car}/inquiry', [InquiryController::class, 'store'])
+        ->name('inquiries.store');
+
+    Route::get('/inquiries', [InquiryController::class, 'index'])
+        ->name('inquiries.index');
+
+    Route::get('/inquiries/{id}', [InquiryController::class, 'show'])
+        ->name('inquiries.show');
+
+    Route::post('/inquiries/{id}/message', [InquiryController::class, 'sendMessage'])
+        ->name('inquiries.message');
+});
