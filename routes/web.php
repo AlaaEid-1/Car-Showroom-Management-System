@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dealer\CarController;
+use App\Http\Controllers\Api\CarApiController;
 use App\Http\Controllers\Dealer\DashboardController;
 use App\Http\Controllers\Dealer\InquiryController;
 use App\Http\Controllers\Dealer\ShowroomController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index']);
-
+Route::get('api/vehicle-list', [CarApiController::class, 'index']);
 Route::group([
     'as' => 'dashboarddealer.',
     'prefix' => 'dashboarddealer',
@@ -18,7 +19,7 @@ Route::group([
 ], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
-    
+
     Route::get('/showroom', [ShowroomController::class, 'edit'])->name('showroom.edit');
     Route::post('/showroom', [ShowroomController::class, 'store'])->name('showroom.store');
     Route::patch('/showroom', [ShowroomController::class, 'update'])->name('showroom.update');
@@ -83,6 +84,9 @@ Route::middleware('auth')->group(function () {
         ->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'readAll'])
         ->name('notifications.read-all');
+
+    Route::post('/become-dealer', [\App\Http\Controllers\DealerRequestController::class, 'store'])
+        ->name('become-dealer');
 });
 
 // Admin Dashboard & Infrastructure Routes
@@ -96,8 +100,8 @@ Route::middleware(['auth', 'verified', 'admin'])
         Route::delete('/users/{user}', [\App\Http\Controllers\AdminController::class, 'deleteUser'])->name('users.delete');
         Route::get('/dealers', [\App\Http\Controllers\AdminController::class, 'dealers'])->name('dealers');
         Route::get('/dealers/requests', [\App\Http\Controllers\AdminController::class, 'dealerRequests'])->name('dealers.requests');
-        Route::patch('/dealers/{user}/approve', [\App\Http\Controllers\AdminController::class, 'approveDealer'])->name('dealers.approve');
-        Route::patch('/dealers/{user}/reject', [\App\Http\Controllers\AdminController::class, 'rejectDealer'])->name('dealers.reject');
+        Route::patch('/dealers/{dealerRequest}/approve', [\App\Http\Controllers\AdminController::class, 'approveDealer'])->name('dealers.approve');
+        Route::patch('/dealers/{dealerRequest}/reject', [\App\Http\Controllers\AdminController::class, 'rejectDealer'])->name('dealers.reject');
         Route::patch('/dealers/{user}/status', [\App\Http\Controllers\AdminController::class, 'updateDealerStatus'])->name('dealers.status');
         Route::get('/cars', [\App\Http\Controllers\AdminController::class, 'cars'])->name('cars');
         Route::delete('/cars/{car}', [\App\Http\Controllers\AdminController::class, 'deleteCar'])->name('cars.delete');

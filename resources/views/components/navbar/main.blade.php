@@ -88,6 +88,24 @@
                 <a href="{{ Auth::user()->role === 'dealer' ? route('dashboarddealer.dashboard') : (Auth::user()->role === 'admin' ? route('admin.dashboard') : route('inquiries.index')) }}" class="text-sm font-semibold text-slate-800 hover:text-luxury-gold transition-colors duration-200">
                     Dashboard
                 </a>
+
+                @if(Auth::user()->role === 'customer')
+                    @php
+                        $pendingRequest = Auth::user()->dealerRequests()->where('status', \App\Enums\DealerRequestStatus::PENDING)->first();
+                    @endphp
+                    @if($pendingRequest)
+                        <span class="inline-flex items-center justify-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200">
+                            Request Pending
+                        </span>
+                    @else
+                        <form method="POST" action="{{ route('become-dealer') }}" class="inline">
+                            @csrf
+                            <button type="submit" class="inline-flex items-center justify-center px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider bg-slate-800 text-white hover:bg-luxury-gold hover:text-white transition-all duration-300 shadow-md">
+                                Become a Dealer
+                            </button>
+                        </form>
+                    @endif
+                @endif
                 
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
@@ -142,6 +160,23 @@
             <a href="{{ Auth::user()->role === 'dealer' ? route('dashboarddealer.dashboard') : (Auth::user()->role === 'admin' ? route('admin.dashboard') : route('inquiries.index')) }}" class="block text-sm font-semibold text-slate-800 hover:text-luxury-gold py-2">
                 Dashboard
             </a>
+            @if(Auth::user()->role === 'customer')
+                @php
+                    $pendingRequest = Auth::user()->dealerRequests()->where('status', \App\Enums\DealerRequestStatus::PENDING)->first();
+                @endphp
+                @if($pendingRequest)
+                    <div class="block w-full text-center text-sm font-semibold uppercase tracking-wider bg-amber-50 text-amber-700 py-3 rounded-lg border border-amber-200 mt-2 mb-2">
+                        Request Pending
+                    </div>
+                @else
+                    <form method="POST" action="{{ route('become-dealer') }}" class="w-full mt-2 mb-2">
+                        @csrf
+                        <button type="submit" class="block w-full text-center text-sm font-semibold uppercase tracking-wider bg-slate-800 text-white py-3 rounded-lg hover:bg-luxury-gold transition-colors duration-200">
+                            Become a Dealer
+                        </button>
+                    </form>
+                @endif
+            @endif
             <form method="POST" action="{{ route('logout') }}" class="w-full">
                 @csrf
                 <button type="submit" class="block w-full text-left text-sm font-semibold text-red-600 hover:text-red-800 py-2">

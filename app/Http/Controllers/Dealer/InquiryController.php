@@ -18,7 +18,7 @@ class InquiryController extends Controller
     public function store(UpdateInquiryRequest $request, $carId)
 {
     $validated = $request->validated();
-
+    
     $car = Car::findOrFail($carId);
 
     // منع إرسال لنفسه

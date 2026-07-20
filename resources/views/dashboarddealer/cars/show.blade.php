@@ -110,13 +110,20 @@
                                 @if($isFavorited)
                                     @method('DELETE')
                                 @endif
-                                <button type="submit" class="inline-flex items-center justify-center p-2.5 rounded-xl border {{ $isFavorited ? 'border-red-200 bg-red-50 text-red-650' : 'border-slate-200 bg-white text-slate-400 hover:text-red-500' }} transition-colors" title="{{ $isFavorited ? 'Remove from favorites' : 'Add to favorites' }}">
+                                <button type="submit" class="inline-flex items-center justify-center p-2.5 rounded-xl border {{ $isFavorited ? 'border-red-200 bg-red-50 text-red-500' : 'border-slate-200 bg-white text-slate-400 hover:text-red-500' }} transition-colors" title="{{ $isFavorited ? 'Remove from favorites' : 'Add to favorites' }}">
                                     <svg class="h-6 w-6" fill="{{ $isFavorited ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                     </svg>
                                 </button>
                             </form>
                         @endif
+                    @else
+                        {{-- Guest: show favorite button that redirects to login --}}
+                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center p-2.5 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-red-500 transition-colors" title="Sign in to save to favorites">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </a>
                     @endauth
                 </div>
             </div>
@@ -296,6 +303,12 @@
                     @if (Auth::user()->role === 'customer' && $car->user_id !== Auth::id())
                         <div class="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-sm space-y-4">
                             <h3 class="text-sm font-bold tracking-wider text-slate-900 uppercase">Request Test Drive</h3>
+
+                            @if(session('error'))
+                                <div class="rounded-xl bg-rose-50 border border-rose-200 p-4 text-rose-800 text-xs font-semibold">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
                             
                             <form action="{{ route('cars.test-drive.store', $car->id) }}" method="POST" class="space-y-4">
                                 @csrf
@@ -325,6 +338,22 @@
                             </form>
                         </div>
                     @endif
+                @else
+                    {{-- Guest: show sign-in prompt for test drive --}}
+                    <div class="bg-white border border-slate-200/60 rounded-3xl p-6 shadow-sm space-y-4">
+                        <h3 class="text-sm font-bold tracking-wider text-slate-900 uppercase">Request Test Drive</h3>
+                        <div class="rounded-xl bg-slate-50 border border-slate-200 p-6 text-center space-y-4">
+                            <svg class="h-8 w-8 mx-auto text-slate-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                            </svg>
+                            <p class="text-xs text-slate-500 leading-relaxed font-medium">
+                                Sign in to schedule a test drive for this vehicle.
+                            </p>
+                            <a href="{{ route('login') }}" class="w-full flex items-center justify-center h-10 rounded-xl text-xs font-bold uppercase tracking-wider bg-luxury-gold text-white hover:bg-luxury-charcoal transition-colors duration-200 shadow-sm">
+                                Sign In to Book
+                            </a>
+                        </div>
+                    </div>
                 @endauth
 
             </div>

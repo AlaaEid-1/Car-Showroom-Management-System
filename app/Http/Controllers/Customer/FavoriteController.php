@@ -12,9 +12,9 @@ class FavoriteController extends Controller
      * Add a car listing to the customer's favorites.
      */
     public function store(Car $car)
-    {
+    { 
         $user = Auth::user();
-        
+
         abort_if($user->role !== 'customer', 403, 'Only customers can manage favorites.');
         abort_if($car->status !== 'published', 404, 'Only published vehicles can be favorited.');
 

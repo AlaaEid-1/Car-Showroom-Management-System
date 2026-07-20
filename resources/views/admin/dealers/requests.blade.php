@@ -46,11 +46,11 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center gap-3">
                                     <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-luxury-charcoal text-white font-bold text-xs uppercase select-none">
-                                        {{ substr($req->name, 0, 1) }}
+                                        {{ substr($req->user->name, 0, 1) }}
                                     </span>
                                     <div>
-                                        <div class="text-sm font-bold text-slate-800 select-all">{{ $req->name }}</div>
-                                        <div class="text-[10px] text-slate-400 font-semibold uppercase mt-0.5 select-all">@ {{ $req->username }} &bull; {{ $req->email }}</div>
+                                        <div class="text-sm font-bold text-slate-800 select-all">{{ $req->user->name }}</div>
+                                        <div class="text-[10px] text-slate-400 font-semibold uppercase mt-0.5 select-all">@ {{ $req->user->username }} &bull; {{ $req->user->email }}</div>
                                     </div>
                                 </div>
                             </td>

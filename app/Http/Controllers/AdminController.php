@@ -121,49 +121,57 @@ class AdminController extends Controller
 
     public function dealerRequests()
     {
-        $requests = User::where('role', 'dealer')
-            ->where('status', 'inactive')
+        $requests = \App\Models\DealerRequest::with('user')
+            ->where('status', \App\Enums\DealerRequestStatus::PENDING)
             ->latest()
             ->get();
 
         return view('admin.dealers.requests', compact('requests'));
     }
 
-    public function approveDealer(User $user)
+    public function approveDealer(\App\Models\DealerRequest $dealerRequest)
     {
-        if ($user->role !== 'dealer' || $user->status !== 'inactive') {
-            return back()->withErrors('Invalid approval target.');
+        if ($dealerRequest->status !== \App\Enums\DealerRequestStatus::PENDING) {
+            return back()->withErrors('This request has already been processed.');
         }
 
-        $user->update([
+        $dealerRequest->update([
+            'status' => \App\Enums\DealerRequestStatus::APPROVED,
+        ]);
+
+        $dealerRequest->user->update([
+            'role' => 'dealer',
             'status' => 'active',
         ]);
+
+        $dealerRequest->user->notify(new \App\Notifications\DealerRequestApprovedNotification());
 
         \Illuminate\Support\Facades\Log::info('Admin approved dealer', [
             'admin_id' => auth()->id(),
-            'dealer_id' => $user->id,
+            'dealer_id' => $dealerRequest->user_id,
         ]);
 
-        return redirect()->route('admin.dealers.requests')->with('success', "Dealer {$user->name} has been approved and activated.");
+        return redirect()->route('admin.dealers.requests')->with('success', "Dealer {$dealerRequest->user->name} has been approved and activated.");
     }
 
-    public function rejectDealer(User $user)
+    public function rejectDealer(\App\Models\DealerRequest $dealerRequest)
     {
-        if ($user->role !== 'dealer' || $user->status !== 'inactive') {
-            return back()->withErrors('Invalid rejection target.');
+        if ($dealerRequest->status !== \App\Enums\DealerRequestStatus::PENDING) {
+            return back()->withErrors('This request has already been processed.');
         }
 
-        $user->update([
-            'role' => 'customer',
-            'status' => 'active',
+        $dealerRequest->update([
+            'status' => \App\Enums\DealerRequestStatus::REJECTED,
         ]);
+
+        $dealerRequest->user->notify(new \App\Notifications\DealerRequestRejectedNotification());
 
         \Illuminate\Support\Facades\Log::info('Admin rejected dealer application', [
             'admin_id' => auth()->id(),
-            'dealer_id' => $user->id,
+            'dealer_id' => $dealerRequest->user_id,
         ]);
 
-        return redirect()->route('admin.dealers.requests')->with('success', "Dealer application for {$user->name} was rejected. Role reset to customer.");
+        return redirect()->route('admin.dealers.requests')->with('success', "Dealer application for {$dealerRequest->user->name} was rejected.");
     }
 
     public function updateDealerStatus(Request $request, User $user)
