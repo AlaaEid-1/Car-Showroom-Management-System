@@ -1,2 +1,6 @@
 *
 !.gitignore
+!cars/
+!cars/*
+!showrooms/
+!showrooms/*
