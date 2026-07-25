@@ -10,6 +10,7 @@ sed -i "s/__PORT__/$CLEAN_PORT/g" /etc/nginx/nginx.conf
 # Wait for DB if needed (optional simple ping can be done, but just run migrate with force)
 echo "Running migrations..."
 php artisan migrate --force
+php artisan db:seed --force
 
 echo "Caching configurations..."
 php artisan config:cache

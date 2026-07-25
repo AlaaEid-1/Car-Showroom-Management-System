@@ -14,69 +14,85 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-         // Admin
-    User::create([
-        'name' => 'Alaa Eid',
-        'email' => 'AlaaEid@gmail.com',
-        'username' => 'alaaeid',
-        'password' => Hash::make('password'),
-        'role' => 'admin',
-        'status' => 'active',
-    ]);
+        // Admin
+        User::updateOrCreate(
+            ['email' => env('ADMIN_EMAIL', 'admin@example.com')],
+            [
+                'name' => env('ADMIN_NAME', 'Admin'),
+                'username' => explode('@', env('ADMIN_EMAIL', 'admin@example.com'))[0],
+                'password' => Hash::make(env('ADMIN_PASSWORD', 'change_me')),
+                'role' => 'admin',
+                'status' => 'active',
+            ]
+        );
 
-    // Dealer 1
-    User::create([
-        'name' => 'Menna Eid',
-        'email' => 'MennaEid@gmail.com',
-        'username' => 'mennaeid',
-        'password' => Hash::make('password'),
-        'role' => 'dealer',
-        'status' => 'active',
-    ]);
+        // Dealer 1
+        User::firstOrCreate(
+            ['email' => 'MennaEid@gmail.com'],
+            [
+                'name' => 'Menna Eid',
+                'username' => 'mennaeid',
+                'password' => Hash::make('password'),
+                'role' => 'dealer',
+                'status' => 'active',
+            ]
+        );
 
-    // Dealer 2
-    User::create([
-        'name' => 'Sami Eid',
-        'email' => 'SamiEid@gmail.com',
-        'username' => 'samieid',
-        'password' => Hash::make('password'),
-        'role' => 'dealer',
-        'status' => 'active',
-    ]);
+        // Dealer 2
+        User::firstOrCreate(
+            ['email' => 'SamiEid@gmail.com'],
+            [
+                'name' => 'Sami Eid',
+                'username' => 'samieid',
+                'password' => Hash::make('password'),
+                'role' => 'dealer',
+                'status' => 'active',
+            ]
+        );
 
-    // Customers
-    User::create([
-        'name' => 'Manal Eid',
-        'email' => 'ManalEid@gmail.com',
-        'username' => 'manaleid',
-        'password' => Hash::make('password'),
-        'role' => 'customer',
-        'status' => 'active',
-    ]);
+        // Customers
+        User::firstOrCreate(
+            ['email' => 'ManalEid@gmail.com'],
+            [
+                'name' => 'Manal Eid',
+                'username' => 'manaleid',
+                'password' => Hash::make('password'),
+                'role' => 'customer',
+                'status' => 'active',
+            ]
+        );
 
-    User::create([
-        'name' => 'Batool Eid',
-        'email' => 'BatoolEid@gmail.com',
-        'username' => 'batooleid',
-        'password' => Hash::make('password'),
-        'role' => 'customer',
-        'status' => 'active',
-    ]);
-    User::create([
-        'name' => 'Israa Eid',
-        'email' => 'IsraaEid@gmail.com',
-        'username' => 'israaeid',
-        'password' => Hash::make('password'),
-        'role' => 'customer',
-        'status' => 'active',
-    ]);
-    User::create([
-        'name' => 'Afnan Eid',
-        'email' => 'AfnanEid@gmail.com',
-        'username' => 'afnaneid',
-        'password' => Hash::make('password'),
-        'role' => 'customer',
-        'status' => 'active',
-    ]);
+        User::firstOrCreate(
+            ['email' => 'BatoolEid@gmail.com'],
+            [
+                'name' => 'Batool Eid',
+                'username' => 'batooleid',
+                'password' => Hash::make('password'),
+                'role' => 'customer',
+                'status' => 'active',
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'IsraaEid@gmail.com'],
+            [
+                'name' => 'Israa Eid',
+                'username' => 'israaeid',
+                'password' => Hash::make('password'),
+                'role' => 'customer',
+                'status' => 'active',
+            ]
+        );
+
+        User::firstOrCreate(
+            ['email' => 'AfnanEid@gmail.com'],
+            [
+                'name' => 'Afnan Eid',
+                'username' => 'afnaneid',
+                'password' => Hash::make('password'),
+                'role' => 'customer',
+                'status' => 'active',
+            ]
+        );
     }
 }
