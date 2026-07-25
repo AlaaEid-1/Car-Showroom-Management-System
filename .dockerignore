@@ -16,4 +16,4 @@ storage/framework/sessions/*
 storage/framework/testing/*
 public/hot
 public/storage
-docker/
+
