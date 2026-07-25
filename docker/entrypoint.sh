@@ -16,5 +16,8 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
+echo "Creating storage symlink..."
+php artisan storage:link --force
+
 echo "Starting Supervisor (Nginx + PHP-FPM)..."
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
