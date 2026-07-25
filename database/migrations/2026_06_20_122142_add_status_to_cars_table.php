@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('cars', function (Blueprint $table) {
-            $table->enum('status', ['draft', 'published', 'sold'])
-              ->default('draft')->change();;
-    });
+            $table->string('status')->default('draft')->change();
+        });
     }
 
     /**
