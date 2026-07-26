@@ -14,25 +14,23 @@ class ShowroomSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminEmail = env('ADMIN_EMAIL', 'admin@example.com');
-        
         $dealer1 = User::firstOrCreate(
-            ['email' => $adminEmail],
+            ['email' => 'MennaEid@gmail.com'],
             [
-                'name' => env('ADMIN_NAME', 'Admin'),
-                'username' => explode('@', $adminEmail)[0],
-                'password' => \Illuminate\Support\Facades\Hash::make(env('ADMIN_PASSWORD', 'change_me')),
-                'role' => 'admin',
+                'name' => 'Menna Eid',
+                'username' => 'mennaeid',
+                'password' => 'password',
+                'role' => 'dealer',
                 'status' => 'active',
             ]
         );
 
         $dealer2 = User::firstOrCreate(
-            ['email' => 'MennaEid@gmail.com'],
+            ['email' => 'mohammed@gmail.com'],
             [
-                'name' => 'Menna Eid',
-                'username' => 'mennaeid',
-                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'name' => 'Mohammed',
+                'username' => 'mohammed',
+                'password' => 'password',
                 'role' => 'dealer',
                 'status' => 'active',
             ]

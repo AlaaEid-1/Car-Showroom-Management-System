@@ -14,43 +14,56 @@ class CarSeeder extends Seeder
      */
     public function run(): void
     {
-        $showroom1 = Showroom::first();
-        $showroom2 = Showroom::skip(1)->first();
+        // Safely fetch showrooms belonging specifically to our predefined Dealers
+        $showroom1 = Showroom::whereHas('user', function ($query) {
+            $query->where('email', 'MennaEid@gmail.com');
+        })->first();
 
-        Car::create([
-            'showroom_id' => $showroom1->id,
-            'user_id' => $showroom1->user_id,
-            'title' => 'Toyota Corolla',
-            'brand' => 'Toyota',
-            'model' => 'Corolla',
-            'year' => 2022,
-            'price' => 18000,
-            'description' => 'Reliable and fuel efficient',
-            'status' => 'published',
-        ]);
+        $showroom2 = Showroom::whereHas('user', function ($query) {
+            $query->where('email', 'mohammed@gmail.com');
+        })->first();
 
-        Car::create([
-            'showroom_id' => $showroom1->id,
-            'user_id' => $showroom1->user_id,
-            'title' => 'Honda Civic',
-            'brand' => 'Honda',
-            'model' => 'Civic',
-            'year' => 2023,
-            'price' => 22000,
-            'description' => 'Sporty and modern design',
-            'status' => 'published',
-        ]);
+        if (!$showroom1 || !$showroom2) {
+            return;
+        }
 
-        Car::create([
-            'showroom_id' => $showroom2->id,
-            'user_id' => $showroom2->user_id,
-            'title' => 'BMW M3',
-            'brand' => 'BMW',
-            'model' => 'M3',
-            'year' => 2021,
-            'price' => 55000,
-            'description' => 'High performance sports car',
-            'status' => 'published',
-        ]);
+        Car::firstOrCreate(
+            ['title' => 'Toyota Corolla', 'showroom_id' => $showroom1->id],
+            [
+                'user_id' => $showroom1->user_id,
+                'brand' => 'Toyota',
+                'model' => 'Corolla',
+                'year' => 2022,
+                'price' => 18000,
+                'description' => 'Reliable and fuel efficient',
+                'status' => 'published',
+            ]
+        );
+
+        Car::firstOrCreate(
+            ['title' => 'Honda Civic', 'showroom_id' => $showroom1->id],
+            [
+                'user_id' => $showroom1->user_id,
+                'brand' => 'Honda',
+                'model' => 'Civic',
+                'year' => 2023,
+                'price' => 22000,
+                'description' => 'Sporty and modern design',
+                'status' => 'published',
+            ]
+        );
+
+        Car::firstOrCreate(
+            ['title' => 'BMW M3', 'showroom_id' => $showroom2->id],
+            [
+                'user_id' => $showroom2->user_id,
+                'brand' => 'BMW',
+                'model' => 'M3',
+                'year' => 2021,
+                'price' => 55000,
+                'description' => 'High performance sports car',
+                'status' => 'published',
+            ]
+        );
     }
 }

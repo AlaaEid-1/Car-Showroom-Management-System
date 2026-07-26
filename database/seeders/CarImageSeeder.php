@@ -14,24 +14,25 @@ class CarImageSeeder extends Seeder
      */
     public function run(): void
     {
-          $cars = Car::all();
+        $cars = Car::all();
+        
+        if ($cars->count() < 3) {
+            return;
+        }
 
-        CarImage::create([
-            'car_id' => $cars[0]->id,
-            'path' => 'cars/toyota.jpg',
-            'is_main' => true,
-        ]);
+        CarImage::firstOrCreate(
+            ['car_id' => $cars[0]->id, 'path' => 'cars/toyota.jpg'],
+            ['is_main' => true]
+        );
 
-        CarImage::create([
-            'car_id' => $cars[1]->id,
-            'path' => 'cars/honda.jpg',
-            'is_main' => true,
-        ]);
+        CarImage::firstOrCreate(
+            ['car_id' => $cars[1]->id, 'path' => 'cars/honda.jpg'],
+            ['is_main' => true]
+        );
 
-        CarImage::create([
-            'car_id' => $cars[2]->id,
-            'path' => 'cars/bmw.jpg',
-            'is_main' => true,
-        ]);
+        CarImage::firstOrCreate(
+            ['car_id' => $cars[2]->id, 'path' => 'cars/bmw.jpg'],
+            ['is_main' => true]
+        );
     }
 }

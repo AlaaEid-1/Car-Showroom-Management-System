@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
@@ -15,14 +14,16 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Admin
+        $adminEmail = trim(env('ADMIN_EMAIL', 'admin@example.com'));
+        
         User::updateOrCreate(
-            ['email' => env('ADMIN_EMAIL', 'admin@example.com')],
+            ['email' => $adminEmail],
             [
                 'name' => env('ADMIN_NAME', 'Admin'),
-                'username' => explode('@', env('ADMIN_EMAIL', 'admin@example.com'))[0],
-                'password' => Hash::make(env('ADMIN_PASSWORD', 'change_me')),
-                'role' => 'admin',
+                'username' => explode('@', $adminEmail)[0],
+                'password' => env('ADMIN_PASSWORD', 'change_me'),
                 'status' => 'active',
+                'role' => 'admin',
             ]
         );
 
@@ -32,7 +33,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Menna Eid',
                 'username' => 'mennaeid',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'role' => 'dealer',
                 'status' => 'active',
             ]
@@ -40,23 +41,23 @@ class UserSeeder extends Seeder
 
         // Dealer 2
         User::firstOrCreate(
-            ['email' => 'SamiEid@gmail.com'],
+            ['email' => 'mohammed@gmail.com'],
             [
-                'name' => 'Sami Eid',
-                'username' => 'samieid',
-                'password' => Hash::make('password'),
+                'name' => 'Mohammed',
+                'username' => 'mohammed',
+                'password' => 'password',
                 'role' => 'dealer',
                 'status' => 'active',
             ]
         );
 
-        // Customers
+        // Customer 1
         User::firstOrCreate(
-            ['email' => 'ManalEid@gmail.com'],
+            ['email' => 'ahmed@gmail.com'],
             [
-                'name' => 'Manal Eid',
-                'username' => 'manaleid',
-                'password' => Hash::make('password'),
+                'name' => 'Ahmed',
+                'username' => 'ahmed',
+                'password' => 'password',
                 'role' => 'customer',
                 'status' => 'active',
             ]
@@ -67,7 +68,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Batool Eid',
                 'username' => 'batooleid',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'role' => 'customer',
                 'status' => 'active',
             ]
@@ -78,7 +79,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Israa Eid',
                 'username' => 'israaeid',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'role' => 'customer',
                 'status' => 'active',
             ]
@@ -89,7 +90,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Afnan Eid',
                 'username' => 'afnaneid',
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'role' => 'customer',
                 'status' => 'active',
             ]
