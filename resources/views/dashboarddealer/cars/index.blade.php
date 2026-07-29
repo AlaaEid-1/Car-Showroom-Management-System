@@ -1,7 +1,7 @@
 <x-layout.dashboard title="My Fleet Directory | Alaa Motors" header="Showroom Fleet Inventory">
-    
+
     <div class="space-y-8">
-        
+
         <!-- Stats Widgets -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <x-cards.stats label="Total Cars Fleet" :value="$totalCars" />
@@ -13,7 +13,7 @@
         <!-- Inventory Filters & Actions Bar -->
         <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                
+
                 <!-- Status Tabs -->
                 <nav class="flex border-b border-slate-100 w-full sm:w-auto">
                     @foreach ($status_options as $opt)
@@ -21,7 +21,7 @@
                             $optSlug = strtolower($opt['name']);
                             $isActive = $status === $optSlug;
                         @endphp
-                        <a href="{{ route('dashboarddealer.cars.index', ['status' => $optSlug, 'search' => request('search')]) }}" 
+                        <a href="{{ route('dashboarddealer.cars.index', ['status' => $optSlug, 'search' => request('search')]) }}"
                            class="px-4 py-3 text-xs font-semibold uppercase tracking-wider border-b-2 transition-colors duration-200 -mb-px flex items-center gap-2 {{ $isActive ? 'border-luxury-gold text-slate-900 font-bold' : 'border-transparent text-slate-400 hover:text-slate-700' }}">
                             {{ $opt['name'] }}
                             <span class="rounded-full px-2 py-0.5 text-[10px] font-bold {{ $isActive ? 'bg-luxury-gold/15 text-luxury-gold' : 'bg-slate-100 text-slate-400' }}">
@@ -47,10 +47,10 @@
                     <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
                     </svg>
-                    <input type="text" 
-                           name="search" 
-                           value="{{ request('search') }}" 
-                           placeholder="Search by brand, model, or title..." 
+                    <input type="text"
+                           name="search"
+                           value="{{ request('search') }}"
+                           placeholder="Search by brand, model, or title..."
                            class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:ring-1 focus:ring-luxury-gold focus:border-luxury-gold outline-none">
                 </div>
                 @if(request()->filled('search'))
@@ -80,8 +80,9 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="h-12 w-16 rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
                                     @if ($car->images->isNotEmpty())
-                                        <img src="{{ asset('storage/' . $car->images->first()->path) }}" alt="{{ $car->title }}" class="h-full w-full object-cover">
-                                    @else
+                                        <img src="{{ url('storage/' . ltrim($car->images->first()->path, '/')) }}"
+                                            alt="{{ $car->title }}"
+                                            class="h-full w-full object-cover">                                    @else
                                         <div class="h-full w-full flex items-center justify-center text-slate-300">
                                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />

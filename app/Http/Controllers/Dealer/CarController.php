@@ -90,7 +90,7 @@ class CarController extends Controller
     }
     public function show($id)
     {
-        $car = Car::findOrFail($id);
+        $car = Car::with(['images', 'showroom'])->findOrFail($id);
 
         if (!\Illuminate\Support\Facades\Gate::allows('view', $car)) {
             abort(404);

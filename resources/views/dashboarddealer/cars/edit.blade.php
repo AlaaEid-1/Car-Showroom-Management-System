@@ -1,5 +1,5 @@
 <x-layout.dashboard title="Edit Listing: {{ $car->title }} | Alaa Motors" header="Edit Listing Details">
-    
+
     <div class="max-w-3xl mx-auto bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
         <div class="mb-8 border-b border-slate-100 pb-6 flex items-center justify-between">
             <div>
@@ -11,10 +11,10 @@
             </a>
         </div>
 
-        <form action="{{ route('dashboarddealer.cars.update', $car->id) }}" 
-              method="POST" 
-              enctype="multipart/form-data" 
-              class="space-y-8" 
+        <form action="{{ route('dashboarddealer.cars.update', $car->id) }}"
+              method="POST"
+              enctype="multipart/form-data"
+              class="space-y-8"
               id="edit-car-form">
             @csrf
             @method('PUT')
@@ -79,12 +79,12 @@
                 loading: false,
                 result: null,
                 errorMsg: null,
-                
+
                 generateAI() {
                     this.loading = true;
                     this.result = null;
                     this.errorMsg = null;
-                    
+
                     const title = document.getElementById('title').value;
                     const brand = document.getElementById('brand').value;
                     const model = document.getElementById('model').value;
@@ -118,7 +118,7 @@
                         this.loading = false;
                     });
                 },
-                
+
                 applyAI() {
                     if (this.result) {
                         document.getElementById('title').value = this.result.title;
@@ -201,7 +201,7 @@
                         @foreach ($car->images as $img)
                             <div class="aspect-[16/10] rounded-xl overflow-hidden bg-slate-50 border border-slate-200 shadow-sm relative group">
                                 <img src="{{ asset('storage/' . $img->path) }}" alt="Car thumbnail" class="w-full h-full object-cover">
-                                
+
                                 @if($img->is_main)
                                     <span class="absolute top-1.5 left-1.5 bg-luxury-gold text-white text-[8px] font-bold tracking-widest px-2 py-0.5 rounded-full uppercase">
                                         Cover
@@ -234,8 +234,8 @@
             @endif
 
             <!-- Photo Upload Dropzone (Alpine.js UI component) -->
-            <div class="space-y-2" x-data="{ 
-                filesList: [], 
+            <div class="space-y-2" x-data="{
+                filesList: [],
                 handleFiles(event) {
                     const files = Array.from(event.target.files);
                     this.filesList = files.map(file => ({
@@ -245,20 +245,20 @@
                 }
             }">
                 <x-forms.label value="Upload Replacement Photos" />
-                
+
                 <div class="border-2 border-dashed border-slate-200 rounded-2xl py-10 px-6 flex flex-col items-center justify-center hover:border-luxury-gold transition-colors relative bg-slate-50/50">
                     <svg class="h-10 w-10 text-slate-400 mb-3" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                     </svg>
-                    
+
                     <span class="text-xs font-semibold text-slate-700">Drag files here or click to browse</span>
                     <span class="text-[10px] text-slate-400 mt-1 uppercase font-medium">JPEG, JPG, PNG, WEBP (Max 2MB per image)</span>
-                    
+
                     <!-- Real Hidden Input -->
-                    <input type="file" 
-                           name="images[]" 
-                           id="images" 
-                           multiple 
+                    <input type="file"
+                           name="images[]"
+                           id="images"
+                           multiple
                            accept="image/*"
                            @change="handleFiles"
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
@@ -276,7 +276,7 @@
                         </template>
                     </ul>
                 </div>
-                
+
                 <x-forms.error field="images" />
                 <x-forms.error field="images.*" />
             </div>

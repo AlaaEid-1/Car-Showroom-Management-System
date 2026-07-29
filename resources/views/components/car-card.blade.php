@@ -5,7 +5,7 @@
     <!-- Image Area with Glassmorphic Badges -->
     <div class="aspect-[16/10] relative overflow-hidden bg-slate-100">
         @if($car->images->isNotEmpty())
-            <img src="{{ asset('storage/' . $car->images->first()->path) }}" 
+            <img src="{{ Storage::url($car->images->first()->path) }}" 
                  alt="{{ $car->title }}"
                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out">
         @else

@@ -68,7 +68,7 @@
                     <h3 class="text-xs font-bold tracking-widest text-slate-400 uppercase mb-4 self-start">Cover Photo</h3>
                     <div class="aspect-[4/3] w-full rounded-xl overflow-hidden bg-slate-50 border border-slate-100">
                         @if($car->images->isNotEmpty())
-                            <img src="{{ asset('storage/' . $car->images->first()->path) }}" alt="{{ $car->title }}" class="w-full h-full object-cover">
+                            <img src="{{ Storage::url($car->images->first()->path) }}" alt="{{ $car->title }}" class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex flex-col items-center justify-center text-slate-300">
                                 <svg class="h-10 w-10 mb-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -137,17 +137,13 @@
                 <!-- Alpine.js Photo Slider Component -->
                 <div x-data="{ 
                     activeSlide: 0, 
-                    slides: [
-                        @foreach($car->images as $img)
-                            '{{ asset('storage/' . $img->path) }}',
-                        @endforeach
-                    ]
+                    slides: {{ Illuminate\Support\Js::from($car->images->map(fn($img) => Storage::url($img->path))) }}
                 }" class="bg-white border border-slate-200/60 rounded-3xl overflow-hidden p-3 shadow-sm">
                     
                     <!-- Main Frame -->
                     <div class="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-slate-50 relative border border-slate-100">
                         <template x-if="slides.length > 0">
-                            <img :src="slides[activeSlide]" alt="Vehicle photo" class="w-full h-full object-cover transition-all duration-300">
+                            <img :src="slides[activeSlide]" alt="{{ $car->title }}" class="w-full h-full object-cover transition-all duration-300">
                         </template>
                         <template x-if="slides.length === 0">
                             <div class="w-full h-full flex flex-col items-center justify-center text-slate-300 bg-slate-50">
